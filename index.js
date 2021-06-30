@@ -10,7 +10,37 @@ admin.initializeApp({
 
 const db = admin.firestore();
 
-// https://thehimalayantimes.com/rss big pain in the ass
+const getHimalayanTimes = async () => {
+  const response = await axios.get("https://thehimalayantimes.com/rssFeed/0");
+  const { rss } = convert.xml2js(response.data, { compact: true, spaces: 4 });
+
+  rss.channel.item.forEach(async (item) => {
+    const { title, link, description, pubDate } = item;
+
+    const image =
+      item["media:thumbnail"]._attributes.url === "" || undefined || null
+        ? "dummy.jpg"
+        : item["media:thumbnail"]._attributes.url;
+
+    const post = {
+      guid: link._cdata,
+      title: title._cdata,
+      description: description._cdata,
+      image,
+      pubDate: pubDate._text,
+      source: "The Himalayan Times",
+      section: link._cdata.split("/")[3],
+    };
+
+    const docRef = db.collection("himalayan times");
+
+    try {
+      await docRef.add(post);
+    } catch (e) {
+      console.log(e);
+    }
+  });
+};
 
 const getKathmanduPost = async () => {
   //   "   &quot;
@@ -71,7 +101,7 @@ const getNews = async () => {
     });
 
     // TODO make source static string
-    var post = {
+    const post = {
       guid: guid._text,
       title: title._text,
       description: description._text,
@@ -93,3 +123,4 @@ const getNews = async () => {
 
 // getNews();
 // getKathmanduPost();
+getHimalayanTimes();
