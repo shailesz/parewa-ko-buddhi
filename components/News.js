@@ -48,6 +48,7 @@ const fetchNews = async (url, source) => {
 
     postsData.forEach((post) => {
       newsCollection.add(post);
+      // console.log(post);
     });
   } catch (error) {
     console.log("error:", error);

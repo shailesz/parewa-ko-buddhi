@@ -1,3 +1,5 @@
+const { generateSection } = require("../utils");
+
 module.exports = class HimalayanTimes {
   static generatePost = (rawPost, source) => {
     const { title, link, description, pubDate } = rawPost;
@@ -13,7 +15,7 @@ module.exports = class HimalayanTimes {
       imageURL: imageURL,
       pubDate: pubDate._text,
       source: source,
-      section: link._cdata.split("/")[3],
+      section: generateSection(link._cdata.split("/")[3]),
     };
 
     return post;
