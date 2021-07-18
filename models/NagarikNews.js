@@ -21,7 +21,7 @@ module.exports = class NagarikNews {
       title: title._text,
       description: description._text,
       imageURL: images.length > 0 ? images[0].src : "dummy.jpg",
-      pubDate: pubDate._text,
+      pubDate: Date.parse(`${pubDate._text}`),
       source: source,
       section: link._text.split("/")[3],
     };

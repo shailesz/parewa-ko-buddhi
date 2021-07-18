@@ -13,7 +13,7 @@ module.exports = class HimalayanTimes {
       title: title._cdata,
       description: description._cdata,
       imageURL: imageURL,
-      pubDate: pubDate._text,
+      pubDate: Date.parse(`${pubDate._text}`),
       source: source,
       section: generateSection(link._cdata.split("/")[3]),
     };
