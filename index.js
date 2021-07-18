@@ -21,9 +21,7 @@ var allowCrossDomain = function (req, res, next) {
   }
 };
 
-app.configure(function () {
-  app.use(allowCrossDomain);
-});
+app.use(allowCrossDomain);
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
