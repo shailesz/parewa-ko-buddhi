@@ -41,11 +41,12 @@ app.get("/news", async (req, res) => {
     res.send("data empty");
   }
 
-  const newsData = {};
+  const newsData = [];
 
   snapshot.forEach((doc) => {
     let docId = doc.id.toString();
-    newsData[docId] = doc.data();
+    let docData = { ...doc.data(), id: docId };
+    newsData.push(docData);
   });
 
   res.send(JSON.stringify(newsData));
