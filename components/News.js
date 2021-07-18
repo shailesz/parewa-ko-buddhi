@@ -2,6 +2,7 @@ const serviceAccount = require("../serviceAccountKey.json");
 const axios = require("axios");
 const convert = require("xml-js");
 const admin = require("firebase-admin");
+const shajs = require("sha.js");
 
 const { HimalayanTimes, NagarikNews, KathmanduPost } = require("../models");
 const constants = require("../constants");
@@ -47,8 +48,9 @@ const fetchNews = async (url, source) => {
     const postsData = generatePosts(rss.channel.item, source);
 
     postsData.forEach((post) => {
-      newsCollection.add(post);
-      // console.log(post);
+      newsCollection
+        .doc(shajs("sha256").update(post.link.toString()).digest("hex"))
+        .set(post);
     });
   } catch (error) {
     console.log("error:", error);
