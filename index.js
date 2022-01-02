@@ -40,7 +40,7 @@ app.get("/", (req, res) => {
 
 app.get("/news", async (req, res) => {
   const newsRef = db.collection("articles");
-  const snapshot = await newsRef.orderBy("timestamp", "desc").limit(20).get();
+  const snapshot = await newsRef.orderBy("timestamp", "desc").limit(41).get();
   if (snapshot.empty) {
     res.send("data empty");
   }
