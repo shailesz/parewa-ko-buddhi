@@ -1,6 +1,10 @@
 const express = require("express");
 const admin = require("firebase-admin");
-const serviceAccount = require("./serviceAccountKey.json");
+const serviceAccountKey = {
+  projectId: process.env.PROJECT_ID,
+  clientEmail: process.env.CLIENT_EMAIL,
+  privateKey: process.env.PRIVATE_KEY?.replace(/\\n/g, "\n"),
+};
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -35,8 +39,8 @@ app.get("/", (req, res) => {
 });
 
 app.get("/news", async (req, res) => {
-  const newsRef = db.collection("news");
-  const snapshot = await newsRef.orderBy("pubDate", "desc").limit(7).get();
+  const newsRef = db.collection("articles");
+  const snapshot = await newsRef.orderBy("timestamp", "desc").limit(20).get();
   if (snapshot.empty) {
     res.send("data empty");
   }
