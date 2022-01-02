@@ -28,7 +28,7 @@ var allowCrossDomain = function (req, res, next) {
 app.use(allowCrossDomain);
 
 admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
+  credential: admin.credential.cert(serviceAccountKey),
 });
 
 // Database references
